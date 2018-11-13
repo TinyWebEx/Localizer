@@ -2,9 +2,9 @@ import "https://unpkg.com/mocha@5.2.0/mocha.js"; /* globals mocha */
 import "https://unpkg.com/chai@4.1.2/chai.js"; /* globals chai */
 import "https://unpkg.com/sinon@6.1.5/pkg/sinon.js"; /* globals sinon */
 
-import * as Localizer from "/common/modules/Localizer/Localizer.js";
+import * as Localizer from "../Localizer.js";
 
-import * as HtmlMock from "./modules/HtmlMock.js";
+import * as HtmlMock from "./helper/HtmlMock.js";
 
 const TEST_ATTRIBUTES = [
     "placeholder",

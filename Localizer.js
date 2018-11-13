@@ -1,11 +1,9 @@
 /**
  * Translates WebExtension's HTML document by attributes.
  *
- * @module /common/modules/Localizer
- * @requires /common/modules/Logger
+ * @module Localizer
  * @requires ./replaceInnerContent
  */
-import * as Logger from "/common/modules/Logger.js";
 import { replaceInnerContent } from "./replaceInnerContent.js";
 
 const I18N_ATTRIBUTE = "data-i18n";
@@ -120,7 +118,7 @@ function replaceI18n(elem, tag) {
             replaceWith(elem, null, translatedMessage);
         } catch (error) {
             // log error but continue translating as it was likely just one problem in one translation
-            Logger.logError(error.message, "for element", elem);
+            console.error(error.message, "for element", elem);
         }
     }
 
@@ -140,7 +138,7 @@ function replaceI18n(elem, tag) {
             replaceWith(elem, replaceAttribute, translatedMessage);
         } catch (error) {
             // log error but continue translating as it was likely just one problem in one translation
-            Logger.logError(error.message, "for element", elem, "while replacing attribute", replaceAttribute);
+            console.error(error.message, "for element", elem, "while replacing attribute", replaceAttribute);
         }
     }
 }
@@ -153,8 +151,6 @@ function replaceI18n(elem, tag) {
  */
 export function init() {
     document.querySelectorAll(`[${I18N_ATTRIBUTE}]`).forEach((currentElem) => {
-        Logger.logInfo("init translate", currentElem);
-
         const contentString = currentElem.dataset[I18N_DATASET];
         replaceI18n(currentElem, contentString);
     });
@@ -165,5 +161,3 @@ export function init() {
 
 // automatically init module
 init();
-
-Logger.logInfo("Localizer module loaded.");

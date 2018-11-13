@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "TinyWE Localizer library dev example",
+  "short_name": "TinyWE Localizer",
+  "version": "1.0",
+  "author": "rugk",
+
+  "description": "A tiny library that tarnslates your HTML file with the WebExtension translation system.",
+  "homepage_url": "https://github.com/tinywe/localizer",
+
+  // testing version allows loading unit test libraries from CDNs
+  "content_security_policy": "default-src 'none'; style-src 'self' https://unpkg.com; script-src 'self' https://unpkg.com",
+
+  "permissions": [],
+  "applications": {
+    "gecko": {
+      "strict_min_version": "60.0a1"
+    }
+  }
+}
