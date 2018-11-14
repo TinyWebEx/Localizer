@@ -13,7 +13,7 @@ const TEST_ATTRIBUTES = [
     "aria-label"
 ];
 
-describe("common module: Localizer", function () {
+describe("Localizer", function () {
     before(function () {
         // Mocked function needs to be accessed at least once to get initiated and not be just a getter/property.
         // Otherwise "TypeError: Attempted to wrap undefined property getUILanguage as functioncheckWrappedMethod" is shown.
