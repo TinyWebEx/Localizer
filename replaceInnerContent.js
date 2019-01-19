@@ -5,14 +5,14 @@
  * safer to use and avoids problems with some linters that point out the usage of
  * "innerHtml".
  *
- * @module ./replaceInnerContent
+ * @module Localizer
  */
 
 /**
  * Replaces inner content of the HTML element.
  *
- * This function determinates whether HTML is being replaced as HTML or not allowed
- * (in order to avoid a dependency on innerHTML).
+ * This function ignores a potential third parameter and thus does not allow
+ * you to insert HTML code, but always interprets it as text.
  *
  * @protected
  * @param  {HTMLElement} elem
