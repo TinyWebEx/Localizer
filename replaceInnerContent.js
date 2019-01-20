@@ -5,6 +5,7 @@
  * safer to use and avoids problems with some linters that point out the usage of
  * "innerHtml".
  *
+ * @package
  * @module Localizer
  */
 

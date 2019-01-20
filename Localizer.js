@@ -1,6 +1,7 @@
 /**
  * Translates WebExtension's HTML document by attributes.
  *
+ * @public
  * @module Localizer
  * @requires ./replaceInnerContent
  */
