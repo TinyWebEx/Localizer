@@ -45,11 +45,11 @@ function getMessageTag(tag) {
  */
 function convertDatasetToAttribute(dataSetValue) {
     // if beginning of string is capital letter, only lowercase that
-    // https://regex101.com/r/GaVoVi/1
+    /** {@link https://regex101.com/r/GaVoVi/1} **/
     dataSetValue = dataSetValue.replace(/^[A-Z]/, (char) => char.toLowerCase());
 
     // replace all other capital letters with dash in front of them
-    // https://regex101.com/r/GaVoVi/3
+    /** {@link https://regex101.com/r/GaVoVi/3} **/
     dataSetValue = dataSetValue.replace(/[A-Z]/, (char) => {
         return `-${char.toLowerCase()}`;
     });
