@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://github.com/TinyWebEx/" >All TinyWebExt modules</a></h2><h3>Modules</h3><ul><li><a href="module-Localizer.html">Localizer</a><ul class='methods'><li data-type='method'><a href="module-Localizer.html#.init">init</a></li><li data-type='method'><a href="module-Localizer.html#.replaceInnerContent">replaceInnerContent</a></li></ul></li><li></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>TinyWebEx Localizer</h1><p>A tiny library that translates your HTML file with the WebExtension translation system. It's easy to use, and you only need to modify the HTML, everything else is done by this library.</p>
+<h2>Features</h2><ul>
+<li>easy, but effective translation</li>
+<li>no JS setup needed</li>
+<li>allows (English) HTML <a href="#fallbacks">fallbacks</a> in the HTML file, but does not require them</li>
+<li>does not translate whole document via string replacement, but relies on a proper HTML syntax</li>
+<li>properly sets the <a href="https://developer.mozilla.org/docs/Web/HTML/Global_attributes/lang">&quot;lang&quot; attribute</a> <a href="https://developer.mozilla.org/docs/Web/HTML/Global_attributes#attr-lang">of your HTML tag</a>, so you can e.g. use the CSS <a href="https://developer.mozilla.org/docs/Web/CSS/:lang">lang selector</a>.</li>
+</ul>
+<h2>How to use?</h2><p>To enable it, you just import the <a href="Localizer.js"><code>Localizer.js</code></a>. Everything is done automatically, you do not need to call any JavaScript function or initialize something.</p>
+<h3>HTML setup for internationalisation (i18n)</h3><p>The real thing you need to do is to adjust your HTML. Actually, here is how it works:</p>
+<ul>
+<li>First, it always uses <a href="https://developer.mozilla.org/docs/Learn/HTML/Howto/Use_data_attributes">data attributes</a>. To avoid clashes there, it also always uses a prefix called <code>i18n</code>.</li>
+<li>As known from the WebExtension internationalisation API, you have to follow the <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/Internationalization#Retrieving_localized_strings_in_manifests">syntax <code>__MSG_translationName__</code></a> as if you internationalize strings in your <code>manifest.json</code>.</li>
+<li>Add the <code>data-i18n</code> attribute to mark an element for translation. In the value of this attribute, you can specify the <code>__MSG_translationName__</code> and the library will translate the <a href="https://developer.mozilla.org/docs/Web/API/Node/textContent"><code>textContent</code></a> of it.</li>
+<li>To translate an attribute, you use the attribute <code>data-i18n-&lt;attribute&gt;</code> (e.g. <code>data-i18n-aria-alt</code>, <code>data-i18n-aria-label</code>) in the very same way. Instead of replacing the content of the HTML element though, it will now set/replace the attribute to this node.</li>
+</ul>
+<p><strong>Note:</strong> Remember, that even for translating only attributes, you need to add (an empty) attribute <code>data-i18n</code> to the HTML node. Otherwise it won't be detected and translated.</p>
+<h3>Fallbacks</h3><p>As translation strings are not specified in the user-facing content, i.e. e.g. text content, but in special attributes; you can fill the &quot;original&quot; places of these strings with fallbacks, e.g. to the English langauge.
+Taht means, you can e.g. add <code>aria-label=&quot;error message&quot; data-i18n-aria-label=&quot;__MSG_errorMessage__&quot;</code> and the <code>aria-label</code> will always show a valid label, even if it has not yet been loaded via JS.</p>
+<p>Note, however, this is not required and you can easily leave it away, because <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/Internationalization#Localized_string_selection">the WebExtension API includes an automatic fallback</a> and may thus fallback by itself. This of course also applies to the library here, so it will also set/replace the strings that you specify to translate, even if you e.g. hardcode translations.</p>
+<h3>Example</h3><pre class="prettyprint source lang-html"><code>&lt;!-- translate content, with hardcoded English fallback -->
+&lt;span data-i18n=&quot;__MSG_optionTranslationName__&quot;>
+  This text here is just the English fallback that is always replaced if the system works properly and a translation entry for &quot;optionTranslationName&quot; is available. It may only appear for a short time, or if the JavaScript translation fails completly.
+&lt;/span>
+
+&lt;!-- translate only attributes, no hardcoded fallback -->
+&lt;div class=&quot;icon-dismiss&quot; data-i18n data-i18n-aria-label=&quot;__MSG_dismissIconDescription__&quot;>
+
+&lt;!-- translate only attributes, no hardcoded fallback -->
+&lt;div class=&quot;icon-dismiss&quot; data-i18n data-i18n-aria-label=&quot;__MSG_dismissIconDescription__&quot;>
+
+&lt;!-- translate only attributes, with hardcoded English fallback -->
+&lt;div class=&quot;icon-dismiss&quot; data-i18n aria-label=&quot;close&quot; data-i18n-aria-label=&quot;__MSG_dismissIconDescription__&quot;>
+
+&lt;!-- translate content and attributes, with hardcoded English fallback -->
+&lt;a data-i18n=&quot;__MSG_optionLearnMore__&quot; data-i18n-href=&quot;__MSG_optionErrorCorrectionDescrLink__&quot; href=&quot;https://en.wikipedia.org/wiki/QR_code#Error_correction&quot;>Learn more&lt;/a></code></pre><h3>Localisation (l10n)</h3><p>As mentioned, it uses the WebExtension translation system, so you <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/Internationalization#Providing_localized_strings_in__locales">just add the strings to translate to your <code>messages.json</code></a>.</p>
+<p>For translators, it is also useful to include a small guide in your contributing guide, such as <a href="https://github.com/TinyWebEx/common/blob/contribimprove/CONTRIBUTING.md#internationalisation-of-html-files">ours here</a>.</p>
+<h3>Using HTML in translations</h3><p><strong>Important:</strong> By default you can only include plain text in your translations. HTML translations are disabled by default for security reasons!</p>
+<p>Whether HTML translations are enabled depends on one source code file in this repo, i.e. <a href="replaceInnerContent.js"><code>replaceInnerContent.js</code></a>. The reason for this is that <a href="https://github.com/mozilla/addons-linter">the linting tool</a> used on addons.mozilla.org (AMO) otherwise complains about a potential security issue if HTML translations are enabled. This results in a warning when uploading the add-on to AMO as the HTML version makes use of <code>innerHtml</code> in the JavaScript file.</p>
+<p>If you want to enable HTML translations though, you need to:</p>
+<ul>
+<li>Replace/Add the file <code>replaceInnerContent.js</code> with (the content of) <a href="replaceInnerContent.js.InsecureWithHtml.example"><code>replaceInnerContent.js.InsecureWithHtml.example</code></a>.</li>
+<li>All the translation strings that should be parsed as HTML have to include the marker <code>!HTML!</code> (and an optional space afterwards, that will be trimmed) in front of the text.</li>
+</ul>
+<p>So a sentence could look like this:</p>
+<pre class="prettyprint source lang-json"><code>&quot;boldSentence&quot;: {
+  &quot;message&quot;: &quot;!HTML! &lt;b>This sentence is bold.&lt;/b>&quot;
+}</code></pre><p>This is also explained in short for <a href="https://github.com/TinyWebEx/common/blob/contribimprove/CONTRIBUTING.md#using-html-in-translations">translators in the contributing guide</a>.</p>
+<p><strong>Warning:</strong> If you allow/use HTML translation, note that translators could inject malicious (HTML) code then. As such, you need to take care when reviewing the translation files then. The marker <code>!HTML!</code> can help you here as you can just search for it.</p></article>
+    </section>
+
+
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 20 2019 20:11:05 GMT+0100 (Mitteleuropäische Normalzeit) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/jquery-3.1.1.min.js"></script>
+
+<script src="scripts/search.js"></script>
+
+
+
+
+</body>
+</html>
