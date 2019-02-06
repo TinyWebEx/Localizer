@@ -27,7 +27,7 @@ The real thing you need to do is to adjust your HTML. Actually, here is how it w
 ### Fallbacks
 
 As translation strings are not specified in the user-facing content, i.e. e.g. text content, but in special attributes; you can fill the "original" places of these strings with fallbacks, e.g. to the English langauge.
-Taht means, you can e.g. add `aria-label="error message" data-i18n-aria-label="__MSG_errorMessage__"` and the `aria-label` will always show a valid label, even if it has not yet been loaded via JS.
+That means, you can e.g. add `aria-label="error message" data-i18n data-i18n-aria-label="__MSG_errorMessage__"` and the `aria-label` will always show a valid label, even if it has not (yet) been loaded via JS.
 
 Note, however, this is not required and you can easily leave it away, because [the WebExtension API includes an automatic fallback](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/Internationalization#Localized_string_selection) and may thus fallback by itself. This of course also applies to the library here, so it will also set/replace the strings that you specify to translate, even if you e.g. hardcode translations.
 
