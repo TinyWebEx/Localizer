@@ -9,6 +9,7 @@ A tiny library that translates your HTML file with the WebExtension translation 
 * allows (English) HTML [fallbacks](#fallbacks) in the HTML file, but does not require them
 * does not translate whole document via string replacement, but relies on a proper HTML syntax
 * properly sets the ["lang" attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/lang) [of your HTML tag](https://developer.mozilla.org/docs/Web/HTML/Global_attributes#attr-lang), so you can e.g. use the CSS [lang selector](https://developer.mozilla.org/docs/Web/CSS/:lang).
+* supports [including sub-HTML elements in translations](#keeping-child-elements-in-HTML), so you do not need to use HTML replacements
 
 ## How to use?
 
@@ -78,3 +79,51 @@ So a sentence could look like this:
 This is also explained in short for [translators in the contributing guide](https://github.com/TinyWebEx/common/blob/contribimprove/CONTRIBUTING.md#using-html-in-translations).
 
 **Warning:** If you allow/use HTML translation, note that translators could inject malicious (HTML) code then. As such, you need to take care when reviewing the translation files then. The marker `!HTML!` can help you here as you can just search for it.
+
+### Keeping child elements in HTML
+
+By default, this module just replaces the whole text/content of an HTML tag.
+A common use case is that you may need to include different sub-HTML items (children of the HTML parent) in your translation however. Especially, you may want to allow translators to adjust their position in the translation. 
+
+_Instead of using HTML_ it is suggested to use this method.
+
+basically you just need to add `data-opt-i18n-keep-children` to the HTML parent that needs to be translated this way. It will then:
+* put all HTML tags into a substitutions (`$1`, `$2`, …), which you can use to refer to your content in the translation
+* translate only the actual text content and adjust the position/ordering of the HTML tags, so they meet the translation result
+
+In the end, you e.g. can have a translation like this:
+```json
+"parent": {
+  "message": "Check out $LINK$!",
+  "description": "The text shown.",
+  "placeholders": {
+    "link": {
+      "content": "$1",
+      "example": "<a href=\"https://example.com\">for more details</a>"
+    }
+  }
+},
+"link": {
+  "message": "https://example.com",
+  "description": "The link location."
+},
+"linkText": {
+  "message": "for more details",
+  "description": "The text shown for the link."
+},
+```
+
+The corresponding HTML code is the following one:
+
+```html
+<p data-i18n="__MSG_parent__" data-opt-i18n-keep-children>
+  Check out <a data-i18n="__MSG_linkText__" data-i18n-href="__MSG_link__" href="https://example.com">for more details</a>!
+</p>
+```
+
+As you can, see in the example `$1` will be replaced with the `a` tag for the link. As you can see, obviously, you need to translate the `a` tag as usual, too, and thus you just use the same principles as usual.
+It does also keep the HTML item intact and just move it, it will never be removed from the DOM and you can thus just use it as every other HTML tag.
+You should also be able to nest this feature, as you want.
+
+**Note:** If you use this feature, you should make sure your translations also actually also refer to the HTML tag.
+If they don't, the Localizer does not know where to put the HTML tag and it usually is just placed at the end. As said, it does never delete a HTML tag, so it just stays "in place" then.
