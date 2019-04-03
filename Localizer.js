@@ -112,7 +112,9 @@ function innerTranslateTextNodes(parent, translatedMessage, subsContainer) {
     for (let message of splitTranslatedMessage) {
         // strip spaces, as when this is inserted, the line break/node break will
         // automatically end in a space and could just create two spaces in text
-        message = message.trim();
+        // Spaces at the left are not trimmed, as they are likely deliberate and
+        // there is no line break before to add a space.
+        message = message.trimRight();
 
         // if it is placeholder, replace it with HTML element
         if (message.startsWith(UNIQUE_REPLACEMENT_ID)) {
