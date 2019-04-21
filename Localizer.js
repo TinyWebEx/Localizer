@@ -109,13 +109,7 @@ function innerTranslateTextNodes(parent, translatedMessage, subsContainer) {
 
     // for first element, fake the first element as the next element
     let previousElement = { nextSibling: parent.fistChild };
-    for (let message of splitTranslatedMessage) {
-        // strip spaces, as when this is inserted, the line break/node break will
-        // automatically end in a space and could just create two spaces in text
-        // Spaces at the left are not trimmed, as they are likely deliberate and
-        // there is no line break before to add a space.
-        message = message.trimRight();
-
+    for (const message of splitTranslatedMessage) {
         // if it is placeholder, replace it with HTML element
         if (message.startsWith(UNIQUE_REPLACEMENT_ID)) {
             const childId = message.slice(UNIQUE_REPLACEMENT_ID.length);
