@@ -43,9 +43,6 @@ Note, however, this is not required and you can easily leave it away, because [t
 <!-- translate only attributes, no hardcoded fallback -->
 <div class="icon-dismiss" data-i18n data-i18n-aria-label="__MSG_dismissIconDescription__">
 
-<!-- translate only attributes, no hardcoded fallback -->
-<div class="icon-dismiss" data-i18n data-i18n-aria-label="__MSG_dismissIconDescription__">
-
 <!-- translate only attributes, with hardcoded English fallback -->
 <div class="icon-dismiss" data-i18n aria-label="close" data-i18n-aria-label="__MSG_dismissIconDescription__">
 
