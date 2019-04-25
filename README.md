@@ -9,7 +9,7 @@ A tiny library that translates your HTML file with the WebExtension translation 
 * allows (English) HTML [fallbacks](#fallbacks) in the HTML file, but does not require them
 * does not translate whole document via string replacement, but relies on a proper HTML syntax
 * properly sets the ["lang" attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/lang) [of your HTML tag](https://developer.mozilla.org/docs/Web/HTML/Global_attributes#attr-lang), so you can e.g. use the CSS [lang selector](https://developer.mozilla.org/docs/Web/CSS/:lang).
-* supports [including sub-HTML elements in translations](#keeping-child-elements-in-HTML), so you do not need to use HTML replacements
+* supports [including sub-HTML elements in translations](#keeping-child-elements-in-HTML), so you do not need to use HTML replacements, but let translators dynamically place HTML elements such as links
 
 ## How to use?
 
@@ -60,6 +60,8 @@ For translators, it is also useful to include a small guide in your contributing
 
 **Important:** By default you can only include plain text in your translations. HTML translations are disabled by default for security reasons!
 
+_Instead_ of using HTML it is strongly suggested to use [the child-keeping method explained below]([including sub-HTML elements in translations](#keeping-child-elements-in-HTML)).
+
 Whether HTML translations are enabled depends on one source code file in this repo, i.e. [`replaceInnerContent.js`](replaceInnerContent.js). The reason for this is that [the linting tool](https://github.com/mozilla/addons-linter) used on addons.mozilla.org (AMO) otherwise complains about a potential security issue if HTML translations are enabled. This results in a warning when uploading the add-on to AMO as the HTML version makes use of `innerHtml` in the JavaScript file.
 
 If you want to enable HTML translations though, you need to:
@@ -80,11 +82,10 @@ This can also explained in short for [translators in the contributing guide](htt
 ### Keeping child elements in HTML
 
 By default, this module just replaces the whole text/content of an HTML tag.
-A common use case is that you may need to include different sub-HTML items (children of the HTML parent) in your translation however. Especially, you may want to allow translators to adjust their position in the translation. 
+A common use case is that you may need to include different sub-HTML items (children of the HTML parent) in your translation however. Especially, you may want to allow translators to adjust their position in the translation.
+This is e.g. useful when you want to include links in your translation. 
 
-_Instead of using HTML_ it is suggested to use this method.
-
-basically you just need to add `data-opt-i18n-keep-children` to the HTML parent that needs to be translated this way. It will then:
+To do so, you just need to add `data-opt-i18n-keep-children` to the HTML parent that needs to be translated this way. It will then:
 * put all HTML tags into a substitutions (`$1`, `$2`, …), which you can use to refer to your content in the translation
 * translate only the actual text content and adjust the position/ordering of the HTML tags, so they meet the translation result
 
@@ -122,5 +123,5 @@ As you can, see in the example `$1` will be replaced with the `a` tag for the li
 It does also keep the HTML item intact and just move it, it will never be removed from the DOM and you can thus just use it as every other HTML tag.
 You should also be able to nest this feature, as you want.
 
-**Note:** If you use this feature, you should make sure your translations also actually also refer to the HTML tag.
+**Note:** If you use this feature, you should make sure your translations also actually also refer to the HTML tag (the substitution) via `$1`, `$2` etc.
 If they don't, the Localizer does not know where to put the HTML tag and it usually is just placed at the end. As said, it does never delete a HTML tag, so it just stays "in place" then.
