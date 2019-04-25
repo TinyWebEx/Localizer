@@ -13,7 +13,7 @@ A tiny library that translates your HTML file with the WebExtension translation 
 
 ## How to use?
 
-To enable it, you just import the [`Localizer.js`](Localizer.js). Everything is done automatically, you do not need to call any JavaScript function or initialize something.
+To enable it, you just import the [`Localizer.js`](Localizer.js) module. Everything is done automatically, you do not need to call any JavaScript function or initialize something.
 
 ### HTML setup for internationalisation (i18n)
 
@@ -76,7 +76,7 @@ So a sentence could look like this:
 }
 ```
 
-This is also explained in short for [translators in the contributing guide](https://github.com/TinyWebEx/common/blob/contribimprove/CONTRIBUTING.md#using-html-in-translations).
+This can also explained in short for [translators in the contributing guide](https://github.com/TinyWebEx/common/blob/10ff5cace217841591d702408e64f1ead8c26a64/CONTRIBUTING.md#using-html-in-translations) (permalink, as I now discourage using that feature, anyway).
 
 **Warning:** If you allow/use HTML translation, note that translators could inject malicious (HTML) code then. As such, you need to take care when reviewing the translation files then. The marker `!HTML!` can help you here as you can just search for it.
 
