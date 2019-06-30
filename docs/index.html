@@ -13,6 +13,7 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -39,6 +40,7 @@
     
 
 
+
     <section class="readme">
         <article><h1 id="tinywebex-localizer">TinyWebEx Localizer</h1>
 <p>A tiny library that translates your HTML file with the WebExtension translation system. It's easy to use, and you only need to modify the HTML, everything else is done by this library.</p>
@@ -49,10 +51,11 @@
 <li>allows (English) HTML <a href="#fallbacks">fallbacks</a> in the HTML file, but does not require them</li>
 <li>does not translate whole document via string replacement, but relies on a proper HTML syntax</li>
 <li>properly sets the <a href="https://developer.mozilla.org/docs/Web/HTML/Global_attributes/lang">&quot;lang&quot; attribute</a> <a href="https://developer.mozilla.org/docs/Web/HTML/Global_attributes#attr-lang">of your HTML tag</a>, so you can e.g. use the CSS <a href="https://developer.mozilla.org/docs/Web/CSS/:lang">lang selector</a>.</li>
+<li>supports <a href="#keeping-child-elements-in-HTML">including sub-HTML elements in translations</a>, so you do not need to use HTML replacements, but let translators dynamically place HTML elements such as links</li>
 </ul>
-<h2 id="how-to-use-">How to use?</h2>
-<p>To enable it, you just import the <a href="Localizer.js"><code>Localizer.js</code></a>. Everything is done automatically, you do not need to call any JavaScript function or initialize something.</p>
-<h3 id="html-setup-for-internationalisation-i18n-">HTML setup for internationalisation (i18n)</h3>
+<h2 id="how-to-use%3F">How to use?</h2>
+<p>To enable it, you just import the <a href="Localizer.js"><code>Localizer.js</code></a> module. Everything is done automatically, you do not need to call any JavaScript function or initialize something.</p>
+<h3 id="html-setup-for-internationalisation-(i18n)">HTML setup for internationalisation (i18n)</h3>
 <p>The real thing you need to do is to adjust your HTML. Actually, here is how it works:</p>
 <ul>
 <li>First, it always uses <a href="https://developer.mozilla.org/docs/Learn/HTML/Howto/Use_data_attributes">data attributes</a>. To avoid clashes there, it also always uses a prefix called <code>i18n</code>.</li>
@@ -63,7 +66,7 @@
 <p><strong>Note:</strong> Remember, that even for translating only attributes, you need to add (an empty) attribute <code>data-i18n</code> to the HTML node. Otherwise it won't be detected and translated.</p>
 <h3 id="fallbacks">Fallbacks</h3>
 <p>As translation strings are not specified in the user-facing content, i.e. e.g. text content, but in special attributes; you can fill the &quot;original&quot; places of these strings with fallbacks, e.g. to the English langauge.
-Taht means, you can e.g. add <code>aria-label=&quot;error message&quot; data-i18n-aria-label=&quot;__MSG_errorMessage__&quot;</code> and the <code>aria-label</code> will always show a valid label, even if it has not yet been loaded via JS.</p>
+That means, you can e.g. add <code>aria-label=&quot;error message&quot; data-i18n data-i18n-aria-label=&quot;__MSG_errorMessage__&quot;</code> and the <code>aria-label</code> will always show a valid label, even if it has not (yet) been loaded via JS.</p>
 <p>Note, however, this is not required and you can easily leave it away, because <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/Internationalization#Localized_string_selection">the WebExtension API includes an automatic fallback</a> and may thus fallback by itself. This of course also applies to the library here, so it will also set/replace the strings that you specify to translate, even if you e.g. hardcode translations.</p>
 <h3 id="example">Example</h3>
 <pre class="prettyprint source lang-html"><code>&lt;!-- translate content, with hardcoded English fallback -->
@@ -74,18 +77,18 @@ Taht means, you can e.g. add <code>aria-label=&quot;error message&quot; data-i18
 &lt;!-- translate only attributes, no hardcoded fallback -->
 &lt;div class=&quot;icon-dismiss&quot; data-i18n data-i18n-aria-label=&quot;__MSG_dismissIconDescription__&quot;>
 
-&lt;!-- translate only attributes, no hardcoded fallback -->
-&lt;div class=&quot;icon-dismiss&quot; data-i18n data-i18n-aria-label=&quot;__MSG_dismissIconDescription__&quot;>
-
 &lt;!-- translate only attributes, with hardcoded English fallback -->
 &lt;div class=&quot;icon-dismiss&quot; data-i18n aria-label=&quot;close&quot; data-i18n-aria-label=&quot;__MSG_dismissIconDescription__&quot;>
 
 &lt;!-- translate content and attributes, with hardcoded English fallback -->
-&lt;a data-i18n=&quot;__MSG_optionLearnMore__&quot; data-i18n-href=&quot;__MSG_optionErrorCorrectionDescrLink__&quot; href=&quot;https://en.wikipedia.org/wiki/QR_code#Error_correction&quot;>Learn more&lt;/a></code></pre><h3 id="localisation-l10n-">Localisation (l10n)</h3>
+&lt;a data-i18n=&quot;__MSG_optionLearnMore__&quot; data-i18n-href=&quot;__MSG_optionErrorCorrectionDescrLink__&quot; href=&quot;https://en.wikipedia.org/wiki/QR_code#Error_correction&quot;>Learn more&lt;/a>
+</code></pre>
+<h3 id="localisation-(l10n)">Localisation (l10n)</h3>
 <p>As mentioned, it uses the WebExtension translation system, so you <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/Internationalization#Providing_localized_strings_in__locales">just add the strings to translate to your <code>messages.json</code></a>.</p>
 <p>For translators, it is also useful to include a small guide in your contributing guide, such as <a href="https://github.com/TinyWebEx/common/blob/contribimprove/CONTRIBUTING.md#internationalisation-of-html-files">ours here</a>.</p>
 <h3 id="using-html-in-translations">Using HTML in translations</h3>
 <p><strong>Important:</strong> By default you can only include plain text in your translations. HTML translations are disabled by default for security reasons!</p>
+<p><em>Instead</em> of using HTML it is strongly suggested to use [the child-keeping method explained below](<a href="#keeping-child-elements-in-HTML">including sub-HTML elements in translations</a>).</p>
 <p>Whether HTML translations are enabled depends on one source code file in this repo, i.e. <a href="replaceInnerContent.js"><code>replaceInnerContent.js</code></a>. The reason for this is that <a href="https://github.com/mozilla/addons-linter">the linting tool</a> used on addons.mozilla.org (AMO) otherwise complains about a potential security issue if HTML translations are enabled. This results in a warning when uploading the add-on to AMO as the HTML version makes use of <code>innerHtml</code> in the JavaScript file.</p>
 <p>If you want to enable HTML translations though, you need to:</p>
 <ul>
@@ -95,8 +98,49 @@ Taht means, you can e.g. add <code>aria-label=&quot;error message&quot; data-i18
 <p>So a sentence could look like this:</p>
 <pre class="prettyprint source lang-json"><code>&quot;boldSentence&quot;: {
   &quot;message&quot;: &quot;!HTML! &lt;b>This sentence is bold.&lt;/b>&quot;
-}</code></pre><p>This is also explained in short for <a href="https://github.com/TinyWebEx/common/blob/contribimprove/CONTRIBUTING.md#using-html-in-translations">translators in the contributing guide</a>.</p>
-<p><strong>Warning:</strong> If you allow/use HTML translation, note that translators could inject malicious (HTML) code then. As such, you need to take care when reviewing the translation files then. The marker <code>!HTML!</code> can help you here as you can just search for it.</p></article>
+}
+</code></pre>
+<p>This can also explained in short for <a href="https://github.com/TinyWebEx/common/blob/10ff5cace217841591d702408e64f1ead8c26a64/CONTRIBUTING.md#using-html-in-translations">translators in the contributing guide</a> (permalink, as I now discourage using that feature, anyway).</p>
+<p><strong>Warning:</strong> If you allow/use HTML translation, note that translators could inject malicious (HTML) code then. As such, you need to take care when reviewing the translation files then. The marker <code>!HTML!</code> can help you here as you can just search for it.</p>
+<h3 id="keeping-child-elements-in-html">Keeping child elements in HTML</h3>
+<p>By default, this module just replaces the whole text/content of an HTML tag.
+A common use case is that you may need to include different sub-HTML items (children of the HTML parent) in your translation however. Especially, you may want to allow translators to adjust their position in the translation.
+This is e.g. useful when you want to include links in your translation.</p>
+<p>To do so, you just need to add <code>data-opt-i18n-keep-children</code> to the HTML parent that needs to be translated this way. It will then:</p>
+<ul>
+<li>put all HTML tags into a substitutions (<code>$1</code>, <code>$2</code>, …), which you can use to refer to your content in the translation</li>
+<li>translate only the actual text content and adjust the position/ordering of the HTML tags, so they meet the translation result</li>
+</ul>
+<p>In the end, you e.g. can have a translation like this:</p>
+<pre class="prettyprint source lang-json"><code>&quot;parent&quot;: {
+  &quot;message&quot;: &quot;Check out $LINK$!&quot;,
+  &quot;description&quot;: &quot;The text shown.&quot;,
+  &quot;placeholders&quot;: {
+    &quot;link&quot;: {
+      &quot;content&quot;: &quot;$1&quot;,
+      &quot;example&quot;: &quot;&lt;a href=\&quot;https://example.com\&quot;>for more details&lt;/a>&quot;
+    }
+  }
+},
+&quot;link&quot;: {
+  &quot;message&quot;: &quot;https://example.com&quot;,
+  &quot;description&quot;: &quot;The link location.&quot;
+},
+&quot;linkText&quot;: {
+  &quot;message&quot;: &quot;for more details&quot;,
+  &quot;description&quot;: &quot;The text shown for the link.&quot;
+},
+</code></pre>
+<p>The corresponding HTML code is the following one:</p>
+<pre class="prettyprint source lang-html"><code>&lt;p data-i18n=&quot;__MSG_parent__&quot; data-opt-i18n-keep-children>
+  Check out &lt;a data-i18n=&quot;__MSG_linkText__&quot; data-i18n-href=&quot;__MSG_link__&quot; href=&quot;https://example.com&quot;>for more details&lt;/a>!
+&lt;/p>
+</code></pre>
+<p>As you can, see in the example <code>$1</code> will be replaced with the <code>a</code> tag for the link. As you can see, obviously, you need to translate the <code>a</code> tag as usual, too, and thus you just use the same principles as usual.
+It does also keep the HTML item intact and just move it, it will never be removed from the DOM and you can thus just use it as every other HTML tag.
+You should also be able to nest this feature, as you want.</p>
+<p><strong>Note:</strong> If you use this feature, you should make sure your translations also actually also refer to the HTML tag (the substitution) via <code>$1</code>, <code>$2</code> etc.
+If they don't, the Localizer does not know where to put the HTML tag and it usually is just placed at the end. As said, it does never delete a HTML tag, so it just stays &quot;in place&quot; then.</p></article>
     </section>
 
 
@@ -111,11 +155,13 @@ Taht means, you can e.g. add <code>aria-label=&quot;error message&quot; data-i18
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jan 20 2019 21:55:59 GMT+0100 (Mitteleuropäische Normalzeit) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Sun Jun 30 2019 23:07:02 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
 <script src="scripts/linenumber.js"></script>
+
 
 
 </body>
