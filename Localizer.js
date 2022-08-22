@@ -109,7 +109,7 @@ function innerTranslateTextNodes(parent, translatedMessage, subsContainer) {
     // is also returned in splitTranslatedMessage
     if (splitTranslatedMessage.length <= subsContainer.substitutions.length) {
         console.warn(
-            "You used only", splitTranslatedMessage.length, "message blocks, altghough you could use",
+            "You used only", splitTranslatedMessage.length, "message blocks, although you could use",
             subsContainer.substitutions.length, "substitutions. Possibly you did not include all substitutions in your translation?",
             "Check for typos in the placeholder name e.g.",
             {
@@ -144,7 +144,7 @@ function innerTranslateTextNodes(parent, translatedMessage, subsContainer) {
 
             // if we have no more text elements
             if (nextText.done) {
-                console.warn("Translation contained more text then HTML template. We now add a note. Triggered for translation: ", message);
+                console.warn("Translation contained more text than HTML template. We now add a note. Triggered for translation: ", message);
                 // just create & add a new one
                 const newTextNode = document.createTextNode(message);
 
