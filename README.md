@@ -60,7 +60,7 @@ For translators, it is also useful to include a small guide in your contributing
 
 **Important:** By default you can only include plain text in your translations. HTML translations are disabled by default for security reasons!
 
-_Instead_ of using HTML it is strongly suggested to use [the child-keeping method explained below]([including sub-HTML elements in translations](#keeping-child-elements-in-HTML)).
+_Instead_ of using HTML it is strongly suggested to use [the child-keeping method explained below](#keeping-child-elements-in-HTML).
 
 Whether HTML translations are enabled depends on one source code file in this repo, i.e. [`replaceInnerContent.js`](replaceInnerContent.js). The reason for this is that [the linting tool](https://github.com/mozilla/addons-linter) used on addons.mozilla.org (AMO) otherwise complains about a potential security issue if HTML translations are enabled. This results in a warning when uploading the add-on to AMO as the HTML version makes use of `innerHtml` in the JavaScript file.
 
