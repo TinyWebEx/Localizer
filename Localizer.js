@@ -123,7 +123,7 @@ function innerTranslateTextNodes(parent, translatedMessage, subsContainer) {
     const textOnlyIterator = subsContainer.textOnlyChilds[Symbol.iterator]();
 
     // for first element, fake the first element as the next element
-    let previousElement = { nextSibling: parent.fistChild };
+    let previousElement = { nextSibling: parent.firstChild };
     for (const message of splitTranslatedMessage) {
         // if it is placeholder, replace it with HTML element
         if (message.startsWith(UNIQUE_REPLACEMENT_ID)) {
