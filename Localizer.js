@@ -16,7 +16,7 @@ const UNIQUE_REPLACEMENT_SPLIT = "$i18nSplit$";
 const UNIQUE_REPLACEMENT_ID = "i18nKeepChildren#";
 
 /**
- * Splits the _MSG__*__ format and returns the actual tag.
+ * Splits the _MSG__*__ format (if present) and returns the actual tag.
  *
  * The format is defined in {@link https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n/Locale-Specific_Message_reference#name}.
  *
@@ -26,15 +26,15 @@ const UNIQUE_REPLACEMENT_ID = "i18nKeepChildren#";
  * @throws {Error} if pattern does not match
  */
 function getMessageTag(tag) {
-    /** {@link https://regex101.com/r/LAC5Ib/2} **/
-    const splitMessage = tag.split(/^__MSG_([\w@]+)__$/);
+    /** {@link https://regex101.com/r/iL252z/1} **/
+    const splitMessage = tag.split(/^(?:__MSG_([\w@]+)__|([\w@]+))$/);
 
     // throw custom exception if input is invalid
     if (splitMessage.length < 2) {
         throw new Error(`invalid message tag pattern "${tag}"`);
     }
 
-    return splitMessage[1];
+    return splitMessage[1] || splitMessage[2];
 }
 
 /**
