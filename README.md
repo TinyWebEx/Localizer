@@ -19,8 +19,7 @@ To enable it, you just import the [`Localizer.js`](Localizer.js) module. Everyth
 
 The real thing you need to do is to adjust your HTML. Actually, here is how it works:
 * First, it always uses [data attributes](https://developer.mozilla.org/docs/Learn/HTML/Howto/Use_data_attributes). To avoid clashes there, it also always uses a prefix called `i18n`.
-* As known from the WebExtension internationalisation API, you have to follow the [syntax `__MSG_translationName__`](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/Internationalization#Retrieving_localized_strings_in_manifests) as if you internationalize strings in your `manifest.json`.
-* Add the `data-i18n` attribute to mark an element for translation. In the value of this attribute, you can specify the `__MSG_translationName__` and the library will translate the [`textContent`](https://developer.mozilla.org/docs/Web/API/Node/textContent) of it.
+* Add the `data-i18n` attribute to mark an element for translation. In the value of this attribute, you can specify the `translationName` and the library will translate the [`textContent`](https://developer.mozilla.org/docs/Web/API/Node/textContent) of it. You may instead use the [syntax `__MSG_translationName__`](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/Internationalization#Retrieving_localized_strings_in_manifests) (as known from the WebExtension internationalisation API for strings in your `manifest.json`) for backwards compatibility.
 * To translate an attribute, you use the attribute `data-i18n-<attribute>` (e.g. `data-i18n-aria-alt`, `data-i18n-aria-label`) in the very same way. Instead of replacing the content of the HTML element though, it will now set/replace the attribute to this node.
 
 **Note:** Remember, that even for translating only attributes, you need to add (an empty) attribute `data-i18n` to the HTML node. Otherwise it won't be detected and translated.
@@ -28,7 +27,7 @@ The real thing you need to do is to adjust your HTML. Actually, here is how it w
 ### Fallbacks
 
 As translation strings are not specified in the user-facing content, i.e. e.g. text content, but in special attributes; you can fill the "original" places of these strings with fallbacks, e.g. to the English langauge.
-That means, you can e.g. add `aria-label="error message" data-i18n data-i18n-aria-label="__MSG_errorMessage__"` and the `aria-label` will always show a valid label, even if it has not (yet) been loaded via JS.
+That means, you can e.g. add `aria-label="error message" data-i18n data-i18n-aria-label="errorMessage"` and the `aria-label` will always show a valid label, even if it has not (yet) been loaded via JS.
 
 Note, however, this is not required and you can easily leave it away, because [the WebExtension API includes an automatic fallback](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/Internationalization#Localized_string_selection) and may thus fallback by itself. This of course also applies to the library here, so it will also set/replace the strings that you specify to translate, even if you e.g. hardcode translations.
 
@@ -36,18 +35,18 @@ Note, however, this is not required and you can easily leave it away, because [t
 
 ```html
 <!-- translate content, with hardcoded English fallback -->
-<span data-i18n="__MSG_optionTranslationName__">
+<span data-i18n="optionTranslationName">
   This text here is just the English fallback that is always replaced if the system works properly and a translation entry for "optionTranslationName" is available. It may only appear for a short time, or if the JavaScript translation fails completly.
 </span>
 
 <!-- translate only attributes, no hardcoded fallback -->
-<div class="icon-dismiss" data-i18n data-i18n-aria-label="__MSG_dismissIconDescription__">
+<div class="icon-dismiss" data-i18n data-i18n-aria-label="dismissIconDescription">
 
 <!-- translate only attributes, with hardcoded English fallback -->
-<div class="icon-dismiss" data-i18n aria-label="close" data-i18n-aria-label="__MSG_dismissIconDescription__">
+<div class="icon-dismiss" data-i18n aria-label="close" data-i18n-aria-label="dismissIconDescription">
 
 <!-- translate content and attributes, with hardcoded English fallback -->
-<a data-i18n="__MSG_optionLearnMore__" data-i18n-href="__MSG_optionErrorCorrectionDescrLink__" href="https://en.wikipedia.org/wiki/QR_code#Error_correction">Learn more</a>
+<a data-i18n="optionLearnMore" data-i18n-href="optionErrorCorrectionDescrLink" href="https://en.wikipedia.org/wiki/QR_code#Error_correction">Learn more</a>
 ```
 
 ### Localisation (l10n)
@@ -114,8 +113,8 @@ In the end, you e.g. can have a translation like this:
 The corresponding HTML code is the following one:
 
 ```html
-<p data-i18n="__MSG_parent__" data-opt-i18n-keep-children>
-  Check out <a data-i18n="__MSG_linkText__" data-i18n-href="__MSG_link__" href="https://example.com">for more details</a>!
+<p data-i18n="parent" data-opt-i18n-keep-children>
+  Check out <a data-i18n="linkText" data-i18n-href="link" href="https://example.com">for more details</a>!
 </p>
 ```
 
